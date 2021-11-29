@@ -19,16 +19,18 @@ class UserSerializer(serializers.ModelSerializer):
         return user
 
 
+class SeasoningSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Seasoning
+        fields = ['id', 'name', 'measure']
+
+
 class RecipeSerializer(serializers.ModelSerializer):
     created_at = serializers.DateTimeField(format='%Y-%M-%d %H:%M', read_only=True)
     updated_at = serializers.DateTimeField(format='%Y-%M-%d %H:%M', read_only=True)
+    seasoning = SeasoningSerializer(many=True)
 
     class Meta:
         model = Recipe
         fields = ['id', 'title', 'memo', 'seasoning', 'created_at', 'updated_at']
 
-
-class SeasoningSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Seasoning
-        fields = ['id', 'name', 'measure']
