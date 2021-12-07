@@ -18,8 +18,8 @@ class Seasoning(models.Model):
 class Recipe(models.Model):
     title = models.CharField(max_length=100)
     memo = models.TextField()
-    # SeasoningName = models.ForeignKey(Seasoning, on_delete=models.SET_NULL, null=True, verbose_name='調味料')
-    seasoning = models.ManyToManyField(Seasoning, verbose_name='調味料')
+    # seasoningName = models.ForeignKey(Seasoning, on_delete=models.CASCADE, null=True)
+    seasoningName = models.ManyToManyField(Seasoning, verbose_name='調味料')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -29,5 +29,3 @@ class Recipe(models.Model):
     class Meta:
         db_table = 'recipes'
         verbose_name_plural = 'レシピ'
-
-
