@@ -125,23 +125,25 @@ const CreateSeasoning = () => {
       <ul>
         {seasonings.map(seasoning => {
           return (
-            <li key={seasoning.id}>
-              <label htmlFor="checkbox">
+            <li className="my-2" key={seasoning.id}>
+              <label className="flex justify-between" htmlFor="checkbox">
                 <input type="checkbox" onChange={() => handleCheckbox(seasoning.name, seasoning.measure)} />
                 <span>
                   {seasoning.name} {seasoning.measure}g
                 </span>
-                <button className="bg-green-300 px-4" type="button" onClick={() => setEditeField(seasoning)}>
-                  変更
-                </button>
-                <button
-                  className="bg-red-300 px-4"
-                  onClick={() => {
-                    deleteSeasoning(seasoning.id);
-                  }}
-                >
-                  削除
-                </button>
+                <div>
+                  <button className="bg-green-300 px-4 mr-2" type="button" onClick={() => setEditeField(seasoning)}>
+                    変更
+                  </button>
+                  <button
+                    className="bg-red-300 px-4"
+                    onClick={() => {
+                      deleteSeasoning(seasoning.id);
+                    }}
+                  >
+                    削除
+                  </button>
+                </div>
               </label>
             </li>
           );
