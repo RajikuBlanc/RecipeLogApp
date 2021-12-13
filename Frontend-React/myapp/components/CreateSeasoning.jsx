@@ -1,10 +1,11 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
-
 const CreateSeasoning = () => {
   const [seasonings, setSeasonings] = useState([]);
   const [editeField, setEditeField] = useState({ id: '', name: '', measure: 0 });
-  const [seasoningList, setSeasoningList] = useState([]);
+  const [seasoningLists, setSeasoningLists] = useState([]);
+  const [checked, setChecked] = useState([]);
+
   useEffect(() => {
     axios
       .get('http://127.0.0.1:8000/api/seasonings/', {
@@ -81,16 +82,21 @@ const CreateSeasoning = () => {
     setEditeField({ ...editeField, [name]: value });
   };
 
-  const handleCheckbox = (seasoning, measure) => {
-    setSeasoningList([
-      ...seasoningList,
-      {
-        name: seasoning,
-        measure: measure
-      }
-    ]);
+  const handleCheck = e => {
+    if (checked.includes(e.target.value)) {
+      setSeasoningLists(seasoningLists.filter(item => e.target.value !== item.id));
+      setChecked(checked.filter(item => item !== e.target.value));
+    } else {
+      setChecked([...checked, e.target.value]);
+      setSeasoningLists([
+        ...seasoningLists,
+        {
+          id: e.target.value
+        }
+      ]);
+    }
   };
-
+  console.log(seasoningLists, checked);
   return (
     <>
       <div className="flex space-x-2">
@@ -127,7 +133,13 @@ const CreateSeasoning = () => {
           return (
             <li className="my-2" key={seasoning.id}>
               <label className="flex justify-between" htmlFor="checkbox">
-                <input type="checkbox" onChange={() => handleCheckbox(seasoning.name, seasoning.measure)} />
+                <input
+                  type="checkbox"
+                  value={seasoning.id}
+                  name={seasoning.name}
+                  measure={seasoning.measure}
+                  onChange={e => handleCheck(e)}
+                />
                 <span>
                   {seasoning.name} {seasoning.measure}g
                 </span>
