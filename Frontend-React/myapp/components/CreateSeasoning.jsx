@@ -1,8 +1,9 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
+
 const CreateSeasoning = () => {
   const [seasonings, setSeasonings] = useState([]);
-  const [editeField, setEditeField] = useState({ id: '', name: '', measure: 0 });
+  const [editeField, setEditeField] = useState({ name: '', measure: 0 });
   const [seasoningLists, setSeasoningLists] = useState([]);
   const [checked, setChecked] = useState([]);
 
@@ -18,10 +19,10 @@ const CreateSeasoning = () => {
       });
   }, []);
 
-  const newSeasoning = (seasoning, count) => {
+  const newSeasoning = seasoning => {
     const data = {
-      name: seasoning,
-      measure: count
+      name: seasoning.name,
+      measure: seasoning.measure
     };
     axios
       .post('http://127.0.0.1:8000/api/seasonings/', data, {
@@ -32,8 +33,7 @@ const CreateSeasoning = () => {
       })
       .then(res => {
         setSeasonings([...seasonings, res.data]);
-        setCount(0);
-        setCreateSeasoning('');
+        setEditeField({ name: '', measure: 0 });
       });
   };
 
@@ -96,7 +96,7 @@ const CreateSeasoning = () => {
       ]);
     }
   };
-  console.log(seasoningLists, checked);
+
   return (
     <>
       <div className="flex space-x-2">
@@ -111,19 +111,19 @@ const CreateSeasoning = () => {
           required
         />
 
-        <button name="measure" value={editeField.measure} onClick={e => handleCountDownMeasure(e)}>
+        <button type="button" name="measure" value={editeField.measure} onClick={e => handleCountDownMeasure(e)}>
           -
         </button>
         <p>{editeField.measure}g</p>
-        <button name="measure" value={editeField.measure} onClick={e => handleCountUpMeasure(e)}>
+        <button type="button" name="measure" value={editeField.measure} onClick={e => handleCountUpMeasure(e)}>
           +
         </button>
         {editeField.id ? (
-          <button className="bg-green-300 px-4" onClick={() => editSeasoning(editeField)}>
+          <button type="button" className="bg-green-300 px-4" onClick={() => editSeasoning(editeField)}>
             変更
           </button>
         ) : (
-          <button className="bg-blue-300 px-4" onClick={() => newSeasoning(editeField)}>
+          <button type="button" className="bg-blue-300 px-4" onClick={() => newSeasoning(editeField)}>
             追加
           </button>
         )}
@@ -144,10 +144,16 @@ const CreateSeasoning = () => {
                   {seasoning.name} {seasoning.measure}g
                 </span>
                 <div>
-                  <button className="bg-green-300 px-4 mr-2" type="button" onClick={() => setEditeField(seasoning)}>
+                  <button
+                    type="button"
+                    className="bg-green-300 px-4 mr-2"
+                    type="button"
+                    onClick={() => setEditeField(seasoning)}
+                  >
                     変更
                   </button>
                   <button
+                    type="button"
                     className="bg-red-300 px-4"
                     onClick={() => {
                       deleteSeasoning(seasoning.id);
